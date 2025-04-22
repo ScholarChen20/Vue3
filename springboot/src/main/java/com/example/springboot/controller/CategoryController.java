@@ -50,8 +50,9 @@ public class CategoryController {
     @GetMapping("/tree")
     public Result tree() {
         List<Category> list=categoryService.list();
-        return Result.success(createTree(null,list));
+        return Result.success(createTree(null,list));//null 表示从第一级开始递归
     }
+    //完全递归方法来实现递归树
     private List<Category> createTree(Integer pid,List<Category> categories){
         List<Category> treeList=new ArrayList<>();
         for(Category category : categories){

@@ -25,13 +25,19 @@
       </el-form-item>
       <el-form-item label="分类" prop="category">
         <el-cascader v-model="form.categories"
-                     :porps="{ value: 'name', label: 'name'}"
+                     :props="{ value: 'name', label: 'name'}"
                      :options="categories"
                      placeholder="请选择分类"
                      @change="handleChange"/>
       </el-form-item>
       <el-form-item label="标准码" prop="bookNo">
         <el-input v-model="form.bookNo" placeholder="请输入标准码"/>
+      </el-form-item>
+      <el-form-item label="积分" prop="score">
+        <el-input v-model="form.score" placeholder="请输入积分"/>
+      </el-form-item>
+      <el-form-item label="数量" prop="nums">
+        <el-input v-model="form.nums" placeholder="请输入数量"/>
       </el-form-item>
       <el-form-item label="封面" prop="cover">
         <el-input v-model="form.cover" placeholder="请输入封面"/>
@@ -52,6 +58,16 @@ import {options} from "axios";
 export default {
   name: "AddBook",
   data(){
+    const checkNums = (rule, value, callback) => {
+      // if(value==null || value === undefined){
+      //   return callback(new Error('请输入数字'));
+      // }
+      value = parseInt(value);
+      if (!Number.isInteger(value) || value < 0 || value > 100) {
+        return callback(new Error('请输入0-100的整数'));
+      }
+      callback();
+    };
     return{
       categories:[],
       form: {},
@@ -59,6 +75,9 @@ export default {
         name:[
           {required: true, message: '请输入图书名称', trigger: 'blur'},
           {min: 2,max: 10,message:'长度在3-10个字符', trigger: 'blur'}
+        ],
+        score:[
+          { validator: checkNums ,trigger: 'blur' }
         ],
         description:[
           {required: true, message: '请输入描述', trigger: 'blur'},
@@ -79,6 +98,10 @@ export default {
         cover:[
           {required: true, message: '请输入图书标准码', trigger: 'blur'},
           {min: 2,max: 100,message:'长度在2-100个字符', trigger: 'blur'}
+        ],
+        nums:[
+          {required: true, message: '请输入数量', trigger: 'blur'},
+          { validator: checkNums ,trigger: 'blur' },
         ]
       }
     }

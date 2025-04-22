@@ -47,7 +47,11 @@ const routes = [
       //=====  book  =====
       { path: 'bookList', name: 'BookList', component: () => import(/* webpackChunkName: "about" */ '../views/book/List.vue')},
       { path: 'addBook', name: 'AddBook', component: () => import(/* webpackChunkName: "about" */ '../views/book/Add.vue')},
-      { path: 'editBook', name: 'EditBook', component: () => import(/* webpackChunkName: "about" */ '../views/book/Edit.vue')}
+      { path: 'editBook', name: 'EditBook', component: () => import(/* webpackChunkName: "about" */ '../views/book/Edit.vue')},
+      //=====  borrow  =====
+      { path: 'borrowList', name: 'BorrowList', component: () => import(/* webpackChunkName: "about" */ '../views/borrow/List.vue')},
+      { path: 'addBorrow', name: 'AddBorrow', component: () => import(/* webpackChunkName: "about" */ '../views/borrow/Add.vue')},
+      { path: 'editBorrow', name: 'EditBorrow', component: () => import(/* webpackChunkName: "about" */ '../views/borrow/Edit.vue')}
     ]
   },
   {

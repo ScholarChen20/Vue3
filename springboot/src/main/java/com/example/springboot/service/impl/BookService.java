@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.example.springboot.controller.request.BookPageRequest;
 import com.example.springboot.controller.request.CategoryPageRequest;
 import com.example.springboot.entity.Book;
+import com.example.springboot.entity.Category;
 import com.example.springboot.mapper.BookMapper;
 import com.example.springboot.mapper.CategoryMapper;
 import com.example.springboot.service.IBookService;
@@ -11,6 +12,7 @@ import com.example.springboot.service.ICategoryService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,13 +40,8 @@ public class BookService implements IBookService {
     }
     @Override
     public void save(Book obj) {
-        List<String> categories = obj.getCategories();
-        StringBuilder sb = new StringBuilder();
-        if(CollUtil.isNotEmpty(categories)){
-            categories.forEach(v -> sb.append(v).append(" > "));
-            obj.setCategory(sb.toString().substring(0,sb.lastIndexOf(" > ")));
-        }
-
+        obj.setCategory(category(obj.getCategories()));
+        obj.setUpdatetime(new Date());
         bookMapper.save(obj);
     }
 
@@ -55,6 +52,7 @@ public class BookService implements IBookService {
 
     @Override
     public void update(Book obj) {
+        obj.setCategory(category(obj.getCategories()));
         obj.setUpdatetime(new Date());
         bookMapper.updateById(obj);
     }
@@ -64,5 +62,13 @@ public class BookService implements IBookService {
         bookMapper.deleteById(id);
     }
 
+    private String category(List<String> categories){
+         StringBuilder  sb= new StringBuilder();
+         if(CollUtil.isNotEmpty(categories)){
+             categories.forEach(v -> sb.append(v).append(" > "));
+             return sb.substring(0,sb.lastIndexOf(" > "));
+         }
+        return sb.toString();
+    }
 
 }

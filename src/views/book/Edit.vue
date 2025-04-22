@@ -24,8 +24,9 @@
         <el-input v-model="form.publisher" placeholder="请输入出版社"/>
       </el-form-item>
       <el-form-item label="分类" prop="category">
-        <el-cascader v-model="form.categories"
-                     :porps="{value: 'name',label: 'name'}"
+        <el-cascader style="width: 200px"
+                     v-model="form.categories"
+                     :props="{value: 'name',label: 'name'}"
                      :options="categories"
                      placeholder="请选择分类"/>
       </el-form-item>
@@ -34,6 +35,9 @@
       </el-form-item>
       <el-form-item label="封面" prop="cover">
         <el-input v-model="form.cover" placeholder="请输入封面"/>
+      </el-form-item>
+      <el-form-item label="积分" prop="score">
+        <el-input v-model="form.score" placeholder="请输入积分"/>
       </el-form-item>
     </el-form>
     <div style="text-align: center;margin-top: 30px">
@@ -56,6 +60,9 @@ export default {
         name:[
           {required: true, message: '请输入图书名称', trigger: 'blur'},
           {min: 2,max: 10,message:'长度在3-10个字符', trigger: 'blur'}
+        ],
+        score:[
+          {required: true, message: '请输入积分', trigger: 'blur'},
         ],
         description:[
           {required: true, message: '请输入描述', trigger: 'blur'},
@@ -87,6 +94,7 @@ export default {
       this.form=res.data;
       if(this.form.category){
         this.form.categories = this.form.category.split(' > ')
+        console.log(this.form.categories)
       }
     })
   },
