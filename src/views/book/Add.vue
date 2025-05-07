@@ -34,13 +34,22 @@
         <el-input v-model="form.bookNo" placeholder="请输入标准码"/>
       </el-form-item>
       <el-form-item label="积分" prop="score">
-        <el-input v-model="form.score" placeholder="请输入积分"/>
+        <el-input-number v-model="form.score" :min="1" :max="10" label="积分"/>
       </el-form-item>
       <el-form-item label="数量" prop="nums">
         <el-input v-model="form.nums" placeholder="请输入数量"/>
       </el-form-item>
+      <br/>
       <el-form-item label="封面" prop="cover">
-        <el-input v-model="form.cover" placeholder="请输入封面"/>
+        <!--        <el-input v-model="form.cover" placeholder="请输入封面"/>-->
+        <el-upload
+            class="avatar-uploader"
+            :action="'http://localhost:9090/api/book/file/upload?token=' + this.admin.token"
+            :show-file-list="false"
+            :on-success="handleCoverSuccess">
+          <img v-if="form.cover" :src="form.cover" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
       </el-form-item>
 
     </el-form>
@@ -55,6 +64,7 @@
 <script>
 import request from "@/utils/request";
 import {options} from "axios";
+import Cookies from "js-cookie";
 export default {
   name: "AddBook",
   data(){
@@ -69,8 +79,9 @@ export default {
       callback();
     };
     return{
+      admin:Cookies.get('admin')?JSON.parse(Cookies.get('admin')): {},
       categories:[],
-      form: {},
+      form: {cover: ''},
       rules:{
         name:[
           {required: true, message: '请输入图书名称', trigger: 'blur'},
@@ -113,6 +124,11 @@ export default {
     })
   },
   methods:{
+    handleCoverSuccess(res){
+      if(res.code === '200'){
+        this.form.cover = res.data;
+      }
+    },
     save(){
       this.$refs['ruleForm'].validate((valid) =>{
         if(valid){
@@ -138,3 +154,28 @@ export default {
 }
 </script>
 
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>

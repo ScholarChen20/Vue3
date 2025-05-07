@@ -18,4 +18,6 @@ public interface IUserService {
     void update(User user);
 
     void deleteById(Integer id);
+
+    void handleAccount(User user);
 }

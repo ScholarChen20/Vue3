@@ -3,14 +3,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.springboot.mapper.BookMapper">
     <insert id="save">
-        insert into book(name,description,publish_date,author,publisher,category,book_no,cover,score,nums)
-        values(#{name}, #{description}, #{publishDate} ,#{author} ,#{publisher}, #{category}, #{bookNo}, #{cover},#{score},#{nums})
+        insert into book(name,description,publish_date,author,publisher,category,book_no,cover,score,nums,createtime)
+        values(#{name}, #{description}, #{publishDate} ,#{author} ,#{publisher}, #{category}, #{bookNo}, #{cover},#{score},#{nums},#{createtime})
     </insert>
 
     <update id="updateById">
         update book set name = #{name},description = #{description},publish_date = #{publishDate},author=#{author} ,nums=#{nums},
             publisher= #{publisher}, category= #{category}, book_no= #{bookNo} ,cover=#{cover} , updatetime=#{updatetime},score=#{score}
                 where id= #{id}
+    </update>
+    <update id="updateNumByNo">
+        update book set nums = nums + 1 where book_no = #{bookNo}
     </update>
 
     <delete id="deleteById">
@@ -34,6 +37,10 @@
 
     <select id="getById" resultType="com.example.springboot.entity.Book">
         select * from book where id = #{id}
+    </select>
+
+    <select id="getByNo" resultType="com.example.springboot.entity.Book">
+        select * from book where book_no = #{bookNo}
     </select>
 
 </mapper>

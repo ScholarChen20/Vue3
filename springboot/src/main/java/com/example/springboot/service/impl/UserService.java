@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 public class UserService implements IUserService {
     @Autowired
-     UserMapper userMapper;
+    UserMapper userMapper;
     @Override
     public List<User> list(){
         return userMapper.list();
@@ -57,5 +57,18 @@ public class UserService implements IUserService {
     @Override
     public void deleteById(Integer id) {
         userMapper.deleteById(id);
+    }
+
+    @Override
+    public void handleAccount(User user){
+        Integer score=user.getScore();
+        if(score==null){
+            return;
+        }
+        Integer id = user.getId();
+        User user1=userMapper.getById(id);
+        user.setAccount(user1.getAccount()+score);
+        userMapper.updateById(user);
+
     }
 }

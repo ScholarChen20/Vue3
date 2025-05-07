@@ -36,7 +36,13 @@ public class TokenUtils {
      */
     public static String genToken(String adminId, String sign) {
         return JWT.create().withAudience(adminId) // 将 user id 保存到 token 里面,作为载荷
-                .withExpiresAt(DateUtil.offsetHour(new Date(), 2)) // 2小时后token过期
+                .withExpiresAt(DateUtil.offsetHour(new Date(), 12)) // 2小时后token过期
+                .sign(Algorithm.HMAC256(sign)); // 以 password 作为 token 的密钥
+    }
+
+    public static String genToken(String adminId, String sign,int days) {
+        return JWT.create().withAudience(adminId) // 将 user id 保存到 token 里面,作为载荷
+                .withExpiresAt(DateUtil.offsetDay(new Date(), days)) // 几天后token过期
                 .sign(Algorithm.HMAC256(sign)); // 以 password 作为 token 的密钥
     }
 
@@ -51,7 +57,7 @@ public class TokenUtils {
         try {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             token = request.getHeader("token");
-            if (StrUtil.isNotBlank(token)) {
+            if (StrUtil.isBlank(token)) { // header 没有 就从参数里面获取
                 token = request.getParameter("token");
             }
             if (StrUtil.isBlank(token)) {

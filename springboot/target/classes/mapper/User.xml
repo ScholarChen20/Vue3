@@ -3,13 +3,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.springboot.mapper.UserMapper">
     <insert id="save">
-        insert into user(name,username,age,sex,phone,address)
-        values(#{name},#{username},#{age},#{sex},#{phone},#{address})
+        insert into user(name,username,age,sex,phone,address,account)
+        values(#{name},#{username},#{age},#{sex},#{phone},#{address},#{account})
     </insert>
 
     <update id="updateById">
-        update user set name = #{name},age = #{age},sex = #{sex},phone = #{phone},address = #{address},updatetime = #{updatetime} where id= #{id}
+        update user set name = #{name},age = #{age},sex = #{sex},phone = #{phone},address = #{address},
+                        updatetime = #{updatetime},account = #{account},status = #{status} where id= #{id}
     </update>
+
+<!--    <update id="updateByUserNo">-->
+<!--        update user set account = account + #{score}-->
+<!--        <set>-->
+<!--            <if test="status != null">-->
+<!--                status  = #{status}-->
+<!--            </if>-->
+<!--        </set>-->
+<!--        where username = #{userNo}-->
+<!--    </update>-->
 
     <delete id="deleteById">
         delete from user where id = #{id}
@@ -29,7 +40,12 @@
             </where>
         order by id desc
     </select>
+
     <select id="getById" resultType="com.example.springboot.entity.User">
         select * from user where id = #{id}
+    </select>
+
+    <select id="getByUsername" resultType="com.example.springboot.entity.User">
+        select * from user where username = #{username}
     </select>
 </mapper>

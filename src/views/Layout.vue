@@ -17,18 +17,37 @@
       </div>
 
     </div>
-
+    <!-- 侧边栏和主体-->
     <div style="display: flex">
       <div style="width:200px;min-height:calc(100vh - 62px); overflow: hidden;margin-right: 2px;background-color: #ffffff">
-        <el-menu :default-active="$route.path" :default-openeds="['admin']" router class="el-menu-item">
+        <el-menu :default-active="$route.path" :default-openeds="['admin']" router class="el-menu-item" style="margin-bottom: 10px">
           <el-menu-item index="/">
             <i class="el-icon-s-home" style="color: #1dd8b9"></i>
             <span>首页</span>
           </el-menu-item>
+
           <el-menu-item index="/">
             <i class="el-icon-message" style="color: #1dd8b9"></i>
             <span>系统公告</span>
           </el-menu-item>
+
+          <el-submenu index="borrow">
+            <template slot="title">
+              <i class="el-icon-notebook-2" style="color: #13c6a8"></i>
+              <span>借书管理</span>
+            </template>
+            <el-menu-item index="/borrowList">借书列表</el-menu-item>
+            <el-menu-item index="/addBorrow">借书添加</el-menu-item>
+          </el-submenu>
+
+          <el-submenu index="return_">
+            <template slot="title">
+              <i class="el-icon-document" style="color: #13c6a8"></i>
+              <span>还书管理</span>
+            </template>
+            <el-menu-item index="/returnList">还书列表</el-menu-item>
+          </el-submenu>
+
           <el-submenu index="book">
             <template slot="title">
               <i class="el-icon-date" style="color: #1dd8b9"></i>
@@ -37,14 +56,7 @@
             <el-menu-item index="/bookList">图书列表</el-menu-item>
             <el-menu-item index="/addBook">图书添加</el-menu-item>
           </el-submenu>
-          <el-submenu index="borrow">
-            <template slot="title">
-              <i class="el-icon-document-copy" style="color: #13c6a8"></i>
-              <span>借书管理</span>
-            </template>
-            <el-menu-item index="/borrowList">借书列表</el-menu-item>
-            <el-menu-item index="/addBorrow">借书添加</el-menu-item>
-          </el-submenu>
+
           <el-submenu index="category">
             <template slot="title">
               <i class="el-icon-notebook-1" style="color: #1de3c2"></i>

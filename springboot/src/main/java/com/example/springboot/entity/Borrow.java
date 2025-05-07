@@ -17,5 +17,9 @@ public class Borrow {
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private LocalDate updatetime;
     private Integer score;
-
+    private String status;
+    private Integer days;
+    private LocalDate returnDate;
+    //提醒状态 即将到期（-1）
+    private String note;
 }

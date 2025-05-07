@@ -3,15 +3,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.springboot.mapper.BorrowMapper">
     <insert id="save">
-        insert into borrow(book_name,book_no,user_no,user_name,user_phone,score,updatetime)
-        values(#{bookName}, #{bookNo}, #{userNo} ,#{userName} ,#{userPhone}, #{score}, #{updatetime})
+        insert into borrow(book_name,book_no,user_no,user_name,user_phone,score,updatetime,days,return_date)
+        values(#{bookName}, #{bookNo}, #{userNo} ,#{userName} ,#{userPhone}, #{score}, #{updatetime},#{days},#{returnDate})
     </insert>
 
     <update id="updateById">
         update borrow set book_name = #{bookName},book_no = #{bookNo},user_no = #{userNo},user_name=#{userName},
-                          user_phone= #{userPhone}, score= #{score}, updatetime=#{updatetime}
-                where id= #{id}
+                          user_phone= #{userPhone}, score= #{score}, updatetime=#{updatetime},
+                          status=#{status},days=#{days},return_date=#{returnDate}
+        where id= #{id}
     </update>
+
+    <update id="updateStatus">
+        update borrow set status = #{status} where id = #{id}
+    </update>
+
 
     <delete id="deleteById">
         delete from borrow where id = #{id}
@@ -35,8 +41,61 @@
         order by id desc
     </select>
 
+    <select id="listReturByCondition" resultType="com.example.springboot.entity.Return_">
+        SELECT * From retur
+        <where>
+            <if test="bookName != null and bookName !=''">
+                book_name like concat('%', #{bookName}, '%')
+            </if>
+            <if test="bookNo != null and bookNo !=''">
+                and borrow_no = #{borrowNo}
+            </if>
+            <if test="userName != null and userName !=''">
+                user_name like concat('%', #{userName}, '%')
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+    <insert id="saveRetur">
+        insert into retur(book_name,book_no,user_no,user_name,user_phone,score,updatetime,days,return_date,real_date,status)
+        values(#{bookName},#{bookNo},#{userNo},#{userName},#{userPhone},#{score},#{updatetime},#{days},#{returnDate},#{realDate},#{status})
+    </insert>
+
+    <delete id="deleteReturById">
+        delete from retur where id = #{id}
+    </delete>
+
     <select id="getById" resultType="com.example.springboot.entity.Borrow">
         select * from borrow where id = #{id}
+    </select>
+
+    <select id="getCountByTimeRange" resultType="com.example.springboot.mapper.po.BorrowReturCountPO">
+        select  count(id) as count, DATE_FORMAT(createtime,'%Y-%m-%d') as date from
+        <if test="type == 1">
+            borrow
+        </if>
+        <if test="type == 2">
+            retur
+        </if>
+        where
+        <choose>
+            <when test="timeRange == 'week'">
+                createtime >= DATE_SUB(NOW(),INTERVAL 1 WEEK)               -- data_sub 数据库计算时间函数--
+            </when>
+            <when test="timeRange == 'month'">
+                createtime >= DATE_SUB(NOW(),INTERVAL 1 MONTH)             -- creattime一个月时间到现在 --
+            </when>
+            <when test="timeRange == 'month2'">
+                createtime >= DATE_SUB(NOW(),INTERVAL 2 MONTH)
+            </when>
+            <when test="timeRange == 'month3'">
+                createtime >= DATE_SUB(NOW(),INTERVAL 3 MONTH)
+            </when>
+            <otherwise>
+                createtime > now()
+            </otherwise>
+        </choose>
     </select>
 
 

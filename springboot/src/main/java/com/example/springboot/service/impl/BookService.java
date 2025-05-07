@@ -5,6 +5,7 @@ import com.example.springboot.controller.request.BookPageRequest;
 import com.example.springboot.controller.request.CategoryPageRequest;
 import com.example.springboot.entity.Book;
 import com.example.springboot.entity.Category;
+import com.example.springboot.exception.ServiceException;
 import com.example.springboot.mapper.BookMapper;
 import com.example.springboot.mapper.CategoryMapper;
 import com.example.springboot.service.IBookService;
@@ -40,9 +41,14 @@ public class BookService implements IBookService {
     }
     @Override
     public void save(Book obj) {
-        obj.setCategory(category(obj.getCategories()));
-        obj.setUpdatetime(new Date());
-        bookMapper.save(obj);
+        try {
+            obj.setCategory(category(obj.getCategories()));
+            obj.setUpdatetime(new Date());
+            bookMapper.save(obj);
+        } catch (Exception e) {
+            throw new ServiceException("数据插入错误",e);
+        }
+
     }
 
     @Override
@@ -52,9 +58,13 @@ public class BookService implements IBookService {
 
     @Override
     public void update(Book obj) {
-        obj.setCategory(category(obj.getCategories()));
-        obj.setUpdatetime(new Date());
-        bookMapper.updateById(obj);
+        try {
+            obj.setCategory(category(obj.getCategories()));
+            obj.setUpdatetime(new Date());
+            bookMapper.updateById(obj);
+        } catch (Exception e) {
+            throw  new ServiceException("数据更新错误",e);
+        }
     }
 
     @Override

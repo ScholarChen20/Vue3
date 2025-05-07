@@ -3,6 +3,7 @@ import com.example.springboot.controller.request.BaseRequest;
 import com.example.springboot.controller.request.UserPageRequest;
 import com.example.springboot.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -21,4 +22,8 @@ public interface UserMapper {
     void updateById(User user);
 
     void deleteById(Integer id);
+
+    User getByUsername(String userNo);
+
+//    void updateByUserNo(@Param("score")int score,@Param("status")String status, @Param("userNo") String userNo);
 }
