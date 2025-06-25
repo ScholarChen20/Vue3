@@ -52,23 +52,29 @@ public class CategoryController {
         List<Category> list=categoryService.list();
         return Result.success(createTree(null,list));//null 表示从第一级开始递归
     }
-    //完全递归方法来实现递归树
+
+    /**
+     * 创建树形结构, pid为null表示从第一级开始递归, 否则递归到指定pid的子节点    //完全递归方法来实现递归树
+     * @param pid
+     * @param categories
+     * @return
+     */
     private List<Category> createTree(Integer pid,List<Category> categories){
-        List<Category> treeList=new ArrayList<>();
-        for(Category category : categories){
-            if(pid == null){
-                if(category.getPid() == null){
-                    treeList.add(category);
-                    category.setChildren(createTree(category.getId(),categories));
+        List<Category> treeList=new ArrayList<>(); //树形结构的list
+        for(Category category : categories){ // 遍历所有节点
+            if(pid == null){ // 根节点
+                if(category.getPid() == null){ // 根节点
+                    treeList.add(category); // 添加根节点
+                    category.setChildren(createTree(category.getId(),categories)); // 递归添加子节点
                 }
             }else{
-                if(pid.equals(category.getPid())){
-                    treeList.add(category);
-                    category.setChildren(createTree(category.getId(),categories));
+                if(pid.equals(category.getPid())){ // 父节点
+                    treeList.add(category);// 添加父节点
+                    category.setChildren(createTree(category.getId(),categories)); // 递归添加子节点
                 }
             }
-            if(CollUtil.isEmpty(category.getChildren())){
-                category.setChildren(null);
+            if(CollUtil.isEmpty(category.getChildren())){ // 父节点没有子节点, 则将children置空
+                category.setChildren(null); // 父节点没有子节点, 则将children置空
             }
         }
         return treeList;

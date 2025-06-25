@@ -1,6 +1,6 @@
 # 图书管理系统
 
-本项目是使用 Spring Boot 框架开发的一个在线图书管理系统。
+本项目是使用 SpringBoot + Vue.js + Mybatis 框架开发的一个在线图书管理系统。
 
 ## 技术栈
 
@@ -46,9 +46,44 @@
 6. 配置node.js运行前端框架
 7. 运行SpringBoot框架和前端界面即可
 8. 系统功能图
+
 ![SystemInfo.png](assert/SystemInfo.png)
-   
-# vue
+
+9.系统页面图
+
+### 登录页面
+![login.png](assert/login.png)
+
+### 系统首页
+
+![home.png](assert/home.png)
+
+### 借书页面
+
+![borrow.png](assert/borrow.png)
+
+### 还书页面
+
+![returnList.png](assert/returnList.png)
+
+### 图书页面
+
+![bookList.png](assert/bookList.png)
+
+### 图书类别页面
+
+![categoryList.png](assert/categoryList.png)
+
+### 会员页面
+
+![userList.png](assert/userList.png)
+
+### 管理员页面
+
+![adminList.png](assert/adminList.png)
+
+
+# vue项目运行步骤
 
 ## Project setup
 ```
