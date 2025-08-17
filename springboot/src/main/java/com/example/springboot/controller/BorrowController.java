@@ -29,6 +29,12 @@ public class BorrowController {
         borrowService.save(obj);
         return Result.success();
     }
+
+    /**
+     * 删除借阅记录
+     * @param id
+     * @return
+     */
     @DeleteMapping("/delete/{id}")
     public Result delete(@PathVariable Integer id){
         borrowService.deleteById(id);
