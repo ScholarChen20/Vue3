@@ -3,7 +3,7 @@
     <div style="height: 60px;line-height: 60px;background-color: #cdd9d7;margin-bottom: 2px;display:flex">
       <div style="width: 620px">
         <img src="@/assets/logo.png" style="width: 40px;position: relative;top: 10px;left: 10px">
-        <span style="margin-left: 25px;font-size: 24px">图书管理系统</span>
+        <span style="margin-left: 25px;font-size: 24px">图书借阅管理系统</span>
       </div>
       <div style="flex: 1;text-align: right;padding-right: 20px">
         <el-dropdown size="medium">
@@ -20,7 +20,7 @@
     <!-- 侧边栏和主体-->
     <div style="display: flex">
       <div style="width:200px;min-height:calc(100vh - 62px); overflow: hidden;margin-right: 2px;background-color: #ffffff">
-        <el-menu :default-active="$route.path" :default-openeds="['admin']" router class="el-menu-item" style="margin-bottom: 10px">
+        <el-menu :default-active="$route.path" :default-openeds="[]" router class="el-menu-item" style="margin-bottom: 10px">
           <el-menu-item index="/">
             <i class="el-icon-s-home" style="color: #1dd8b9"></i>
             <span>首页</span>
@@ -74,6 +74,7 @@
             <el-menu-item index="/userList">会员列表</el-menu-item>
             <el-menu-item index="/addUser">会员添加</el-menu-item>
           </el-submenu>
+
           <el-submenu index="admin">
             <template slot="title">
               <i class="el-icon-s-tools" style="color: #1dd8b9"></i>

@@ -1,14 +1,14 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.jdbc.Driver  #mysql数据库5.1.49
     url: jdbc:mysql://localhost:3306/db_libary?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
     password: 123456
 
 server:
-  port: 9090
+  port: 9090  #d端口号
 
 mybatis:
-  mapper-locations: classpath:mapper/*.xml
+  mapper-locations: classpath:mapper/*.xml   #mapper文件映射地址
   configuration:
-    map-underscore-to-camel-case: true
+    map-underscore-to-camel-case: true  # 驼峰命名法

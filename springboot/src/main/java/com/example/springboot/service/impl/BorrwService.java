@@ -61,12 +61,11 @@ public class BorrwService implements IBorrowService {
                 borrow.setNote("今日到期");
             }else if(returnDate.isAfter(now)){ // 当前日期比归还的日期大
                 borrow.setNote("正常");
-            }else{
-                borrow.setNote("已超期");
+            }else{  // 超出归还日期大于一天以上
+                borrow.setNote("已过期");
             }
         }
         return new PageInfo<>(borrows);
-//        return new PageInfo<>(borrowMapper.listByCondition(baseRequest));
     }
 
     @Override
@@ -114,10 +113,11 @@ public class BorrwService implements IBorrowService {
     @Transactional
     @Override
     public void saveRetur(Return_ obj){
+        // todo 判断过期状态
+
         obj.setStatus("已归还");
         borrowMapper.updateStatus("已归还",obj.getId()); // 前端传来的借书id
 
-//        obj.setId(null);   //新数据
         obj.setRealDate(LocalDate.now());
         borrowMapper.saveRetur(obj);
         bookMapper.updateNumByNo(obj.getBookNo());
