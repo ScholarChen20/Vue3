@@ -33,6 +33,13 @@ public class BookController {
     IBookService bookService;
 
     private static final String BASE_FILE_PATH = System.getProperty("user.dir") + "/files/";
+
+    /**
+     * 文件上传
+     * @param file
+     * @return
+     * @throws IOException
+     */
     @PostMapping("/file/upload")
     public Result file(MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
@@ -57,6 +64,12 @@ public class BookController {
         return Result.error("文件上传失败");
     }
 
+    /**
+     * 文件下载
+     * @param flag
+     * @param play
+     * @param response
+     */
     @GetMapping("/file/download/{flag}")
     public void downloadFile(@PathVariable String flag, @RequestParam(required = false)String play, HttpServletResponse response) {
         OutputStream os;

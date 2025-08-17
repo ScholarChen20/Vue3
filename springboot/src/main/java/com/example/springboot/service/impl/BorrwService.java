@@ -53,16 +53,16 @@ public class BorrwService implements IBorrowService {
         PageHelper.startPage(baseRequest.getPageNum(),baseRequest.getPageSize());
         List<Borrow> borrows = borrowMapper.listByCondition(baseRequest);
         for(Borrow borrow : borrows){
-            LocalDate returnDate = borrow.getReturnDate();
-            LocalDate now = LocalDate.now();
+            LocalDate returnDate = borrow.getReturnDate(); //归还的日期
+            LocalDate now = LocalDate.now(); // 当前日期
             if(now.plusDays(1).isEqual(returnDate)){ // 当前日期比归还的日期小一天
                 borrow.setNote("即将到期");
-            }else if(now.isEqual(returnDate)){
-                borrow.setNote("已到期");
-            }else if(returnDate.isAfter(now)){
-                borrow.setNote("已过期");
-            }else{
+            }else if(now.isEqual(returnDate)){ // 当前日期比归还的日期相等
+                borrow.setNote("今日到期");
+            }else if(returnDate.isAfter(now)){ // 当前日期比归还的日期大
                 borrow.setNote("正常");
+            }else{
+                borrow.setNote("已超期");
             }
         }
         return new PageInfo<>(borrows);
