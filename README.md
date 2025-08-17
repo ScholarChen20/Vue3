@@ -75,11 +75,11 @@
 
 ![categoryList.png](assert/categoryList.png)
 
-### 会员页面
+### 用户列表页面
 
 ![userList.png](assert/userList.png)
 
-### 管理员页面
+### 管理员列表页面
 
 ![adminList.png](assert/adminList.png)
 
