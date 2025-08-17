@@ -49,41 +49,6 @@
 
 ![SystemInfo.png](assert/SystemInfo.png)
 
-9. 系统展示
-
-### 登录页面
-
-![login.png](assert/login.png)
-
-### 系统首页
-
-![home.png](assert/home.png)
-
-### 借书页面
-
-![borrow.png](assert/borrow.png)
-
-### 还书页面
-
-![returnList.png](assert/returnList.png)
-
-### 图书页面
-
-![bookList.png](assert/bookList.png)
-
-### 图书类别页面
-
-![categoryList.png](assert/categoryList.png)
-
-### 会员页面
-
-![userList.png](assert/userList.png)
-
-### 管理员页面
-
-![adminList.png](assert/adminList.png)
-
-# vue
 
 ## Project setup
 ```
