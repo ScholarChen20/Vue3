@@ -24,7 +24,7 @@
         </el-form-item>
         <el-form-item >
           <el-button style="margin-left: 27px;margin-top: 10px" size="30px" type="success" @click="login()"><i class="el-icon-edit"> 登录</i></el-button>
-          <el-button style="margin-left: 27px;margin-top: 10px" size="30px" type="primary" @click="$router.push('/sign')"><i class="el-icon-eleme"> 注册</i></el-button>
+          <el-button style="margin-left: 27px;margin-top: 10px" size="30px" type="primary" @click="goToSign()"><i class="el-icon-eleme"> 注册</i></el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -81,6 +81,10 @@ export default {
           })
         }
       })
+    },
+    goToSign() {
+      console.log('Attempting navigation to /sign')
+      this.$router.push('/sign')
     }
   }
 }

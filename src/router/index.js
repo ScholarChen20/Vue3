@@ -70,10 +70,31 @@ const router = new VueRouter({
   routes
 })
 
+// router.beforeEach((to, from, next) => {
+//   if(to.path === '/login' || to.path === '/sign') next()
+//   const admin=Cookies.get("admin")
+//   if(!admin && to.path !== '/login') return next("/login")
+//   next()
+// })
 router.beforeEach((to, from, next) => {
-  if(to.path === '/login') next()
-  const admin=Cookies.get("admin")
-  if(!admin && to.path !== '/login') return next("/login")
+  console.log(`导航守卫触发: ${from.path} -> ${to.path}`)
+
+  // 开放路径白名单
+  const publicPaths = ['/login', '/sign']
+  if (publicPaths.includes(to.path)) {
+    console.log('访问开放路径，直接放行')
+    return next()
+  }
+
+  // 检查认证状态
+  const admin = Cookies.get("admin")
+  if (!admin) {
+    console.log('未认证用户，重定向到登录页')
+    return next("/login")
+  }
+
+  // 已认证用户放行
+  console.log('已认证用户，允许访问')
   next()
 })
 export default router

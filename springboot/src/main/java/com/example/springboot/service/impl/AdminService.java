@@ -9,6 +9,7 @@ import com.example.springboot.controller.dto.LoginDTO;
 import com.example.springboot.controller.request.BaseRequest;
 import com.example.springboot.controller.request.LoginRequest;
 import com.example.springboot.controller.request.PasswordRequest;
+import com.example.springboot.controller.request.SignRequest;
 import com.example.springboot.entity.Admin;
 import com.example.springboot.exception.ServiceException;
 import com.example.springboot.mapper.AdminMapper;
@@ -115,6 +116,26 @@ public class AdminService implements IAdminService {
         }
     }
 
+    @Override
+    public void sign(SignRequest request) {
+        // 1. 首先查询数据库是否有改用户
+        Admin admin = adminMapper.getByUsername(request.getUsername());
+        if(admin != null){
+            throw new ServiceException("USER_EXISTS", "用户已注册过！");
+        }
+        // 2.判断密码和确认密码是否一致
+        if(!request.getPassword().equals(request.getNewPassword())){
+            throw new ServiceException("PASSWORD_MISMATCH", "密码和确认密码不一致");
+        }
+        request.setPassword(securePass(request.getPassword()));
+        adminMapper.sign(request);
+    }
+
+    /**
+     * md5加密算法
+     * @param password
+     * @return
+     */
     private String securePass(String password){
         return SecureUtil.md5(password);
     }

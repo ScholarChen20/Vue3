@@ -15,6 +15,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.example.springboot.common.PathConfig.EXCLUDE_PATHS;
+
 @Component
 @Slf4j
 public class JwtInterceptor implements HandlerInterceptor {
@@ -26,6 +28,17 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+
+        String requestURI = request.getRequestURI();
+
+        // 检查请求路径是否在白名单中
+        for (String excludePath : EXCLUDE_PATHS) {
+            if (requestURI.contains(excludePath)) {
+                log.debug("跳过拦截: {}", requestURI);
+                return true;
+            }
+        }
+
         String token = request.getHeader("token");
         if (StrUtil.isBlank(token)) {
             token = request.getParameter("token");
