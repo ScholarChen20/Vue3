@@ -6,6 +6,10 @@
         insert into admin(username,password,phone,email)
         values(#{username},#{password},#{phone},#{email})
     </insert>
+    <insert id="sign">
+        insert into admin(username, password)
+        values(#{username},#{password})
+    </insert>
 
     <update id="updateById">
         update admin set username = #{username},phone = #{phone},email = #{email},updatetime = #{updatetime} , status = #{status} where id= #{id}

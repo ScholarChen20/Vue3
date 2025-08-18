@@ -55,6 +55,10 @@
 
 ![login.png](assert/login.png)
 
+### 注册页面
+
+![sign.png](assert/sign.png)
+
 ### 系统首页
 
 ![home.png](assert/home.png)

@@ -2,11 +2,9 @@ package com.example.springboot.controller;
 
 import com.example.springboot.common.Result;
 import com.example.springboot.controller.dto.LoginDTO;
-import com.example.springboot.controller.request.AdminPageRequest;
-import com.example.springboot.controller.request.BaseRequest;
-import com.example.springboot.controller.request.LoginRequest;
-import com.example.springboot.controller.request.PasswordRequest;
+import com.example.springboot.controller.request.*;
 import com.example.springboot.entity.Admin;
+import com.example.springboot.exception.ServiceException;
 import com.example.springboot.service.IAdminService;
 import com.example.springboot.service.impl.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +20,33 @@ public class AdminController {
     @Autowired
     IAdminService adminService;
 
+    /**
+     * 登录接口
+     * @param request
+     * @return
+     */
     @PostMapping("/login")
     public Result login(@RequestBody LoginRequest request) {
         LoginDTO login=adminService.login(request);
         return Result.success(login);
     }
+
+    /**
+     * 注册接口
+     * @param request
+     * @return
+     */
+    @PostMapping("/sign")
+    public Result sign(@RequestBody SignRequest request) {
+        try {
+            adminService.sign(request);
+            return Result.success("注册成功");
+        } catch (ServiceException e) {
+            // 捕获业务异常并返回给前端
+            return Result.error(e.getCode(), e.getMessage());
+        }
+    }
+
     @PutMapping("/password")
     public Result password(@RequestBody PasswordRequest request) {
         adminService.changePass(request);

@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class Result {
     private static  final String SUCCESS_CODE = "200";
-    private static  final String ERROR_CODE = "-1";
+    private static  final String ERROR_CODE = "400";
 
     private String code;
     private Object data;
@@ -30,8 +30,9 @@ public class Result {
     }
     public static Result error(String code,String msg){
         Result result=new Result();
-        result.setCode(code);
-        result.setData(msg);
+        result.setCode(ERROR_CODE);
+        result.setData(code);
+        result.setMsg(msg);
         return result;
     }
 }
