@@ -5,6 +5,8 @@ import com.example.springboot.entity.Return_;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.example.springboot.mapper.po.BorrowReturCountPO;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -31,4 +33,6 @@ public interface BorrowMapper {
     void updateStatus(@Param("status")String status,@Param("id")Integer id);
 
     List<BorrowReturCountPO> getCountByTimeRange(@Param("timeRange") String timeRange, @Param("type") int type);
+
+    List<Borrow> getSalesTop10(LocalDateTime beginTime, LocalDateTime endTime);
 }

@@ -53,7 +53,9 @@ const routes = [
       { path: 'addBorrow', name: 'AddBorrow', component: () => import(/* webpackChunkName: "about" */ '../views/borrow/Add.vue')},
       { path: 'editBorrow', name: 'EditBorrow', component: () => import(/* webpackChunkName: "about" */ '../views/borrow/Edit.vue')},
       //=====  borrow  =====
-      { path: 'returnList', name: 'ReturnList', component: () => import(/* webpackChunkName: "about" */ '../views/return_/List.vue')}
+      { path: 'returnList', name: 'ReturnList', component: () => import(/* webpackChunkName: "about" */ '../views/return_/List.vue')},
+      //=====  inform  =====
+      { path: 'inform', name: 'Inform', component: () => import(/* webpackChunkName: "about" */ '../views/inform/Inform.vue')}
 
 
     ]

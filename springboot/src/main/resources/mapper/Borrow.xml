@@ -97,6 +97,9 @@
             </otherwise>
         </choose>
     </select>
+    <select id="getSalesTop10" resultType="com.example.springboot.entity.Borrow">
+        select book_name,count(id) as count from borrow
+    </select>
 
 
 </mapper>

@@ -26,10 +26,14 @@
             <span>首页</span>
           </el-menu-item>
 
-          <el-menu-item index="/">
-            <i class="el-icon-message" style="color: #1dd8b9"></i>
-            <span>系统公告</span>
-          </el-menu-item>
+
+          <el-submenu index="borrow">
+            <template slot="title">
+              <i class="el-icon-message" style="color: #1dd8b9"></i>
+              <span>系统公告</span>
+            </template>
+            <el-menu-item index="/inform">公告通知</el-menu-item>
+          </el-submenu>
 
           <el-submenu index="borrow">
             <template slot="title">
