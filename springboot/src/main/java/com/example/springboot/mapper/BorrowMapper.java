@@ -2,6 +2,7 @@ package com.example.springboot.mapper;
 import com.example.springboot.controller.request.BorrowPageRequest;
 import com.example.springboot.entity.Borrow;
 import com.example.springboot.entity.Return_;
+import com.example.springboot.pojo.dto.BooksSalesDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.example.springboot.mapper.po.BorrowReturCountPO;
@@ -34,5 +35,5 @@ public interface BorrowMapper {
 
     List<BorrowReturCountPO> getCountByTimeRange(@Param("timeRange") String timeRange, @Param("type") int type);
 
-    List<Borrow> getSalesTop10(LocalDateTime beginTime, LocalDateTime endTime);
+    List<BooksSalesDTO> getSalesTop10(LocalDateTime beginTime, LocalDateTime endTime);
 }
