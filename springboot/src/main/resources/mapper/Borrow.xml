@@ -97,6 +97,20 @@
             </otherwise>
         </choose>
     </select>
+    <select id="getSalesTop10" resultType="com.example.springboot.pojo.dto.BooksSalesDTO">
+        select bo.book_name,count(bo.id) number
+        from borrow bo ,book b
+        where bo.book_no = b.book_no
+        <if test="begin != null">
+            and bo.createtime &gt; #{begin}
+        </if>
+        <if test="end != null">
+            and bo.createtime &lt; #{end}
+        </if>
+        group by bo.book_name
+        order by number desc
+            limit 0,10
+    </select>
 
 
 </mapper>
