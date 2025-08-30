@@ -1,7 +1,5 @@
 <template>
   <div>
-<!--    <el-calendar v-model="value"></el-calendar>-->
-<!--    从后台获取最近的数据-->
     <div style="margin: 20px 0">
       <el-select class="input" v-model="timeRange" placeholder="请选择" @change="load">
         <el-option
@@ -12,15 +10,28 @@
         </el-option>
       </el-select>
     </div>
-<!--    定义dom元素-->
+
+    <!-- 原有折线图 -->
     <el-card>
       <div id="line" style="width: 100%; height: 400px"></div>
     </el-card>
+
+    <!-- 新增两个图表区域 -->
+    <div style="display: flex; margin-top: 20px;">
+      <!-- 左侧：图书热借top10柱形图 -->
+      <el-card style="width: 50%; margin-right: 10px;">
+        <div id="bookTop10" style="width: 100%; height: 400px"></div>
+      </el-card>
+
+      <!-- 右侧：借阅用户top10饼图 -->
+      <el-card style="width: 50%; margin-left: 10px;">
+        <div id="userTop10" style="width: 100%; height: 400px"></div>
+      </el-card>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import request from "@/utils/request";
 import * as echarts from 'echarts'
 import Cookies from "js-cookie";
@@ -49,7 +60,7 @@ const option = {
   xAxis: {
     type: 'category',
     boundaryGap: false,
-    data: [] // 从后台数据获取
+    data: []
   },
   yAxis: {
     type: 'value'
@@ -60,49 +71,161 @@ const option = {
       type: 'line',
       stack: 'Total',
       smooth: true,
-      data: []// 从后台数据获取
+      data: []
     },
     {
       name: '还书数量',
       type: 'line',
       stack: 'Total',
       smooth: true,
-      data: []// 从后台数据获取
+      data: []
     }
   ]
 };
+
+// 图书热借top10柱形图配置
+const bookTop10Option = {
+  title: {
+    text: '图书热借Top10',
+    left: 'center'
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    }
+  },
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  xAxis: {
+    type: 'category',
+    data: [],
+    axisTick: {
+      alignWithLabel: true
+    }
+  },
+  yAxis: {
+    type: 'value'
+  },
+  series: [{
+    name: '借阅次数',
+    type: 'bar',
+    barWidth: '60%',
+    data: []
+  }]
+};
+
+// 借阅用户top10饼图配置
+const userTop10Option = {
+  title: {
+    text: '借阅用户Top10',
+    left: 'center'
+  },
+  tooltip: {
+    trigger: 'item'
+  },
+  legend: {
+    orient: 'vertical',
+    left: 'left'
+  },
+  series: [{
+    name: '借阅次数',
+    type: 'pie',
+    radius: ['40%', '70%'],
+    avoidLabelOverlap: false,
+    itemStyle: {
+      borderRadius: 10,
+      borderColor: '#fff',
+      borderWidth: 2
+    },
+    label: {
+      show: false,
+      position: 'center'
+    },
+    emphasis: {
+      label: {
+        show: true,
+        fontSize: '18',
+        fontWeight: 'bold'
+      }
+    },
+    labelLine: {
+      show: false
+    },
+    data: []
+  }]
+};
+
 export default {
   name: 'HomeView',
-  data(){
-
+  data() {
     return {
-      // value: new Date(),
-      admin: Cookies.get('admin') ?JSON.parse(Cookies.get('admin')) : {},
-      lineBox:null,
-      timeRange:'week',  //请求查看你的时间范围
-      options:[
-        {label: '最近一周',value:'week'},
-        {label: '最近一个月',value:'month'},
-        {label: '最近二个月',value:'month2'},
-        {label: '最近三个月',value:'month3'},
+      admin: Cookies.get('admin') ? JSON.parse(Cookies.get('admin')) : {},
+      lineBox: null,
+      bookTop10Box: null,
+      userTop10Box: null,
+      timeRange: 'week',
+      options: [
+        { label: '最近一周', value: 'week' },
+        { label: '最近一个月', value: 'month' },
+        { label: '最近二个月', value: 'month2' },
+        { label: '最近三个月', value: 'month3' },
       ]
     }
   },
-  mounted(){  // 等页面全部完成初始化
+  mounted() {
     this.load()
   },
-  methods:{
-    load(){
-      if(!this.lineBox){
-        this.lineBox = echarts.init(document.getElementById('line')); // 初始化echarts容器
+  methods: {
+    load() {
+      // 初始化图表容器
+      if (!this.lineBox) {
+        this.lineBox = echarts.init(document.getElementById('line'));
       }
-      // 从后台获取数据
-      request.get('/borrow/lineCharts/'+this.timeRange).then(res=>{
+
+      if (!this.bookTop10Box) {
+        this.bookTop10Box = echarts.init(document.getElementById('bookTop10'));
+      }
+
+      if (!this.userTop10Box) {
+        this.userTop10Box = echarts.init(document.getElementById('userTop10'));
+      }
+
+      // 加载原有折线图数据
+      request.get('/borrow/lineCharts/' + this.timeRange).then(res => {
         option.xAxis.data = res.data.date
         option.series[0].data = res.data.borrow
         option.series[1].data = res.data.retur
-        this.lineBox.setOption(option) // 设置容器属性值，但你的数据发生变化时就一定要更新option
+        this.lineBox.setOption(option)
+      })
 
+      // 加载图书热借top10数据
+      request.get('/report/top10').then(res => {
+        const nameList = res.data.nameList ? res.data.nameList.split(',') : []
+        const numberList = res.data.numberList ? res.data.numberList.split(',').map(Number) : []
+
+        bookTop10Option.xAxis.data = nameList
+        bookTop10Option.series[0].data = numberList
+        this.bookTop10Box.setOption(bookTop10Option)
+      })
+
+      // 加载借阅用户top10数据
+      request.get('/report/users').then(res => {
+        const nameList = res.data.nameList ? res.data.nameList.split(',') : []
+        const numberList = res.data.numberList ? res.data.numberList.split(',').map(Number) : []
+
+        // 构造饼图数据
+        const pieData = nameList.map((name, index) => ({
+          name: name,
+          value: numberList[index] || 0
+        }))
+
+        userTop10Option.series[0].data = pieData
+        this.userTop10Box.setOption(userTop10Option)
       })
     }
   }

@@ -1,9 +1,10 @@
 package com.example.springboot.service.impl;
 
-import com.example.springboot.entity.Borrow;
 import com.example.springboot.mapper.BorrowMapper;
 import com.example.springboot.pojo.dto.BooksSalesDTO;
+import com.example.springboot.pojo.dto.UsersBorrowDTO;
 import com.example.springboot.pojo.vo.BookTop10ReportVo;
+import com.example.springboot.pojo.vo.UsersTop10ReportVo;
 import com.example.springboot.service.IReportService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,10 +28,7 @@ public class ReportService implements IReportService {
 
     @Override
     public BookTop10ReportVo top10(LocalDate begin, LocalDate end) {
-        long daysBetween = ChronoUnit.DAYS.between(begin, end);
-        if (daysBetween > 180) {
-            throw new IllegalArgumentException("查询时间范围不能超过180天");
-        }
+        isCommonDate(begin, end);
         LocalDateTime beginTime = LocalDateTime.of(begin, LocalTime.MIN);
         LocalDateTime endTime = LocalDateTime.of(end, LocalTime.MAX);
         // 1.先查订单表
@@ -50,5 +45,35 @@ public class ReportService implements IReportService {
                 .numberList(StringUtils.join(numberList, ","))
                 .build();
 
+    }
+
+    @Override
+    public UsersTop10ReportVo top10Users(LocalDate begin, LocalDate end) {
+        isCommonDate(begin, end);
+        LocalDateTime beginTime = LocalDateTime.of(begin, LocalTime.MIN);
+        LocalDateTime endTime = LocalDateTime.of(end, LocalTime.MAX);
+        List<UsersBorrowDTO> usersTop10 = borrowMapper.getUsersTop10(beginTime, endTime);
+
+        // 2.封装成nameList和numberList
+        List<String> nameList = usersTop10.stream().map(UsersBorrowDTO::getName).collect(Collectors.toList());
+        List<Integer> numberList = usersTop10.stream().map(UsersBorrowDTO::getNumber).collect(Collectors.toList());
+
+        //3. 封装成UsersTop10ReportVo并返回
+        return UsersTop10ReportVo.builder()
+                .nameList(StringUtils.join(nameList, ","))
+                .numberList(StringUtils.join(numberList, ","))
+                .build();
+    }
+
+    /**
+     * 判断时间间隔
+     * @param begin
+     * @param end
+     */
+    private static void isCommonDate(LocalDate begin, LocalDate end) {
+        long daysBetween = ChronoUnit.DAYS.between(begin, end);
+        if (daysBetween > 190) {
+            throw new IllegalArgumentException("查询时间范围不能超过半年天");
+        }
     }
 }
