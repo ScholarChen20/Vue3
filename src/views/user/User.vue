@@ -9,15 +9,15 @@
     </div>
 
     <el-table :data="tableData" style="margin-top: 3px; width: 100%;" >
-      <el-table-column prop="username" label="卡号"></el-table-column>
+      <el-table-column prop="username" label="卡号" width="200px"></el-table-column>
       <el-table-column prop="name" label="姓名" width="100px"></el-table-column>
-      <el-table-column prop="age" label="年龄" width="70px"></el-table-column>
-      <el-table-column prop="sex" label="性别" width="70px"></el-table-column>
-      <el-table-column prop="account" label="积分" width="70px"></el-table-column>
-      <el-table-column prop="phone" label="联系方式"></el-table-column>
-      <el-table-column prop="address" label="地址"></el-table-column>
-      <el-table-column prop="createtime" label="创建时间"></el-table-column>
-      <el-table-column prop="updatetime" label="修改时间"></el-table-column>
+      <el-table-column prop="age" label="年龄" width="100px"></el-table-column>
+      <el-table-column prop="sex" label="性别" width="100px"></el-table-column>
+      <el-table-column prop="account" label="积分" width="100px"></el-table-column>
+      <el-table-column prop="phone" label="联系方式" width="160px"></el-table-column>
+      <el-table-column prop="address" label="地址" width="160px"></el-table-column>
+      <el-table-column prop="createtime" label="创建时间" width="170px"></el-table-column>
+      <el-table-column prop="updatetime" label="修改时间" width="170px"></el-table-column>
       <el-table-column  label="状态" width="100">
         <template v-slot="scope">
           <el-switch

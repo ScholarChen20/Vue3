@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="margin: 20px 0">
+    <div style="margin: 5px 0">
       <el-select class="input" v-model="timeRange" placeholder="请选择" @change="load">
         <el-option
           v-for="item in options"
@@ -11,21 +11,21 @@
       </el-select>
     </div>
 
-    <!-- 原有折线图 -->
-    <el-card>
-      <div id="line" style="width: 100%; height: 400px"></div>
+    <!-- 原有折线图 - 调整为占据整个宽度 -->
+    <el-card style="width: 100%;">
+      <div id="line" style="width: 100%; height:390px"></div>
     </el-card>
 
-    <!-- 新增两个图表区域 -->
-    <div style="display: flex; margin-top: 20px;">
-      <!-- 左侧：图书热借top10柱形图 -->
-      <el-card style="width: 50%; margin-right: 10px;">
-        <div id="bookTop10" style="width: 100%; height: 400px"></div>
+    <!-- 新增两个图表区域 - 调整为占据更多空间 -->
+    <div style="display: flex; margin-top: 5px;">
+      <!-- 左侧：图书热借top10柱形图 - 拉宽 -->
+      <el-card style="width: 60%; margin-right: 5px;">
+        <div id="bookTop10" style="width: 100%; height: 330px"></div>
       </el-card>
 
-      <!-- 右侧：借阅用户top10饼图 -->
-      <el-card style="width: 50%; margin-left: 10px;">
-        <div id="userTop10" style="width: 100%; height: 400px"></div>
+      <!-- 右侧：借阅用户top10饼图 - 拉宽 -->
+      <el-card style="width: 40%; margin-left: 5px;">
+        <div id="userTop10" style="width: 100%; height: 340px"></div>
       </el-card>
     </div>
   </div>
@@ -83,7 +83,7 @@ const option = {
   ]
 };
 
-// 图书热借top10柱形图配置
+// 图书热借top10柱形图配置 - 修复横坐标问题
 const bookTop10Option = {
   title: {
     text: '图书热借Top10',
@@ -96,9 +96,9 @@ const bookTop10Option = {
     }
   },
   grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
+    left: '5%',
+    right: '5%',
+    bottom: '10%',
     containLabel: true
   },
   xAxis: {
@@ -106,6 +106,10 @@ const bookTop10Option = {
     data: [],
     axisTick: {
       alignWithLabel: true
+    },
+    axisLabel: {
+      rotate: 45, // 旋转标签避免重叠
+      interval: 0 // 显示所有标签
     }
   },
   yAxis: {
@@ -115,6 +119,15 @@ const bookTop10Option = {
     name: '借阅次数',
     type: 'bar',
     barWidth: '60%',
+    // 设置不同颜色的数组
+    itemStyle: {
+      color: function(params) {
+        // 根据索引设置不同颜色
+        const colors = ['#3398DB', '#F46C2A', '#5AB1EF', '#FFB980', '#749F83',
+          '#9FEA8D', '#E6B1B1', '#FAD866', '#8B78F6', '#F5994E'];
+        return colors[params.dataIndex % colors.length];
+      }
+    },
     data: []
   }]
 };
@@ -208,9 +221,12 @@ export default {
         const nameList = res.data.nameList ? res.data.nameList.split(',') : []
         const numberList = res.data.numberList ? res.data.numberList.split(',').map(Number) : []
 
-        bookTop10Option.xAxis.data = nameList
-        bookTop10Option.series[0].data = numberList
-        this.bookTop10Box.setOption(bookTop10Option)
+        // 确保数据长度一致
+        if (nameList.length > 0 && numberList.length > 0) {
+          bookTop10Option.xAxis.data = nameList
+          bookTop10Option.series[0].data = numberList
+          this.bookTop10Box.setOption(bookTop10Option)
+        }
       })
 
       // 加载借阅用户top10数据

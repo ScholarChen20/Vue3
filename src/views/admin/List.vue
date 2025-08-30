@@ -10,14 +10,14 @@
     </div>
 
     <el-table :data="tableData" style="margin-top: 3px; width: 100%;" >
-      <el-table-column prop="id" label="编号" width="100px"></el-table-column>
-      <el-table-column prop="username" label="用户名" width="100px"></el-table-column>
-      <el-table-column prop="email" label="邮箱"></el-table-column>
-      <el-table-column prop="phone" label="联系方式"></el-table-column>
+      <el-table-column prop="id" label="编号" width="160px"></el-table-column>
+      <el-table-column prop="username" label="用户名" width="200px"></el-table-column>
+      <el-table-column prop="email" label="邮箱" width="220px"></el-table-column>
+      <el-table-column prop="phone" label="联系方式" width="200px"></el-table-column>
 
-      <el-table-column prop="createtime" label="创建时间"></el-table-column>
-      <el-table-column prop="updatetime" label="修改时间"></el-table-column>
-      <el-table-column  label="状态" width="100">
+      <el-table-column prop="createtime" label="创建时间" width="200px"></el-table-column>
+      <el-table-column prop="updatetime" label="修改时间" width="200px"></el-table-column>
+      <el-table-column  label="状态" width="200px">
         <template v-slot="scope">
           <el-switch
               v-model="scope.row.status"
@@ -27,7 +27,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="230">
+      <el-table-column label="操作" width="350px">
         <template v-slot="scope">
           <el-button type="primary" @click="$router.push('/editAdmin?id='+scope.row.id)">编辑</el-button>
           <el-popconfirm title="您确定删除这行数据吗?" @confirm="del(scope.row.id)" style="margin-left: 5px">

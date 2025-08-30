@@ -10,7 +10,7 @@ Vue.use(SlideVerify);
 
 import '@/assets/global.css'
 Vue.config.productionTip = false
-Vue.use(ElementUI,{size: 'small' });
+Vue.use(ElementUI,{size: '', zIndex: 3000  } );
 new Vue({
   router,
   render: h => h(App)

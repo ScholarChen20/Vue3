@@ -8,12 +8,12 @@
     </div>
 
     <el-table :data="tableData" style="margin-top: 3px; width: 100%;" default-expand-all row-key="id" >
-      <el-table-column prop="id" label="编号"></el-table-column>
-      <el-table-column prop="name" label="名称"></el-table-column>
-      <el-table-column prop="remark" label="备注"></el-table-column>
-      <el-table-column prop="createtime" label="创建时间"></el-table-column>
-      <el-table-column prop="updatetime" label="修改时间"></el-table-column>
-      <el-table-column label="操作" width="300">
+      <el-table-column prop="id" label="编号" width="250px"></el-table-column>
+      <el-table-column prop="name" label="名称" width="250px"></el-table-column>
+      <el-table-column prop="remark" label="备注" width="250px"></el-table-column>
+      <el-table-column prop="createtime" label="创建时间" width="250px"></el-table-column>
+      <el-table-column prop="updatetime" label="修改时间" width="250px"></el-table-column>
+      <el-table-column label="操作" width="500px">
         <template v-slot="scope">
           <el-button type="success" v-if="!scope.row.pid" @click="handleAdd(scope.row)">添加二级分类</el-button>
           <el-button type="primary" @click="$router.push('/editCategory?id=' + scope.row.id)">编辑</el-button>
