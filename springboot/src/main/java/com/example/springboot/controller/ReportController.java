@@ -20,10 +20,11 @@ public class ReportController {
     private IReportService reportService;
 
     @GetMapping("/top10")
-    public Result<BookTop10ReportVo> bookTop10(){
-        LocalDate end =  LocalDate.now();
-        // begin取当前日期前六个月
-        LocalDate begin =  LocalDate.now().minusMonths(6);
+    public Result<BookTop10ReportVo> bookTop10(
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate begin, // 默认值
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
+        end = end == null ? LocalDate.now() : end;
+        begin = begin == null ? LocalDate.now().minusMonths(6) : begin;
         log.info("图书热借开始时间：{}，结束时间：{}", begin, end);
         return Result.success(reportService.top10(begin,end));
     }
