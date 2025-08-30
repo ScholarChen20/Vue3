@@ -61,7 +61,11 @@
 
 ### 系统首页
 
-![home.png](assert/home.png)
+![home1.png](assert/home1.png)
+
+### 系统公告
+
+![inform.png](assert/inform.png)
 
 ### 借书页面
 
@@ -88,6 +92,7 @@
 ![adminList.png](assert/adminList.png)
 
 
+# vue
 
 ## Project setup
 ```

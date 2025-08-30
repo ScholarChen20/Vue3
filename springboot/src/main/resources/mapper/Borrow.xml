@@ -98,16 +98,28 @@
         </choose>
     </select>
     <select id="getSalesTop10" resultType="com.example.springboot.pojo.dto.BooksSalesDTO">
-        select bo.book_name,count(bo.id) number
-        from borrow bo ,book b
-        where bo.book_no = b.book_no
+        select bo.book_name as name,count(bo.id) number
+        from borrow bo left join book b on bo.book_no = b.book_no
         <if test="begin != null">
             and bo.createtime &gt; #{begin}
         </if>
         <if test="end != null">
             and bo.createtime &lt; #{end}
         </if>
-        group by bo.book_name
+        group by name
+        order by number desc
+            limit 0,10
+    </select>
+    <select id="getUsersTop10" resultType="com.example.springboot.pojo.dto.UsersBorrowDTO">
+        select u.name,count(bo.id) number
+        from borrow bo left join user u on bo.user_no = u.username
+        <if test="begin != null">
+            and bo.createtime &gt; #{begin}
+        </if>
+        <if test="end != null">
+            and bo.createtime &lt; #{end}
+        </if>
+        group by bo.user_name
         order by number desc
             limit 0,10
     </select>
